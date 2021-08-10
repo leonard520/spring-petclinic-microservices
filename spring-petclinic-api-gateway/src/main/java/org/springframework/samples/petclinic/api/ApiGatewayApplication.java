@@ -15,8 +15,11 @@
  */
 package org.springframework.samples.petclinic.api;
 
+import com.netflix.discovery.EurekaClient;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import io.github.resilience4j.timelimiter.TimeLimiterConfig;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,6 +28,7 @@ import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JConfigB
 import org.springframework.cloud.client.circuitbreaker.Customizer;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.cloud.netflix.eureka.http.RestTemplateDiscoveryClientOptionalArgs;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -48,6 +52,25 @@ public class ApiGatewayApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ApiGatewayApplication.class, args);
+    }
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Autowired
+    private EurekaClient discoveryClient;
+
+    @Bean
+    public RestTemplateDiscoveryClientOptionalArgs discoveryClientOptionalArgs() throws Exception {
+        RestTemplateDiscoveryClientOptionalArgs args = new RestTemplateDiscoveryClientOptionalArgs();
+        args.setHostnameVerifier(NoopHostnameVerifier.INSTANCE);
+        args.setTransportClientFactories(new CustomRestTemplateTransportClientFactories());
+        return args;
+    }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
     }
 
     @Bean

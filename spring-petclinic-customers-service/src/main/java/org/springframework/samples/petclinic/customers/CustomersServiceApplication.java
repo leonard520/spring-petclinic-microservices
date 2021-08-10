@@ -15,17 +15,39 @@
  */
 package org.springframework.samples.petclinic.customers;
 
+import com.netflix.discovery.EurekaClient;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-
+import org.springframework.cloud.netflix.eureka.http.RestTemplateDiscoveryClientOptionalArgs;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
 /**
  * @author Maciej Szarlinski
  */
 @EnableDiscoveryClient
 @SpringBootApplication
 public class CustomersServiceApplication {
+    @Autowired
+    private RestTemplate restTemplate;
 
+    @Autowired
+    private EurekaClient discoveryClient;
+
+    @Bean
+    public RestTemplateDiscoveryClientOptionalArgs discoveryClientOptionalArgs() throws Exception {
+        RestTemplateDiscoveryClientOptionalArgs args = new RestTemplateDiscoveryClientOptionalArgs();
+        args.setHostnameVerifier(NoopHostnameVerifier.INSTANCE);
+        args.setTransportClientFactories(new CustomRestTemplateTransportClientFactories());
+        return args;
+    }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
 	public static void main(String[] args) {
 		SpringApplication.run(CustomersServiceApplication.class, args);
 	}
