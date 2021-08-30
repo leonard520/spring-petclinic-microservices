@@ -24,7 +24,7 @@ Note -  if you would like to deploy the same application to Azure Spring Cloud S
   * [What you will need](#what-you-will-need)
   * [Install the Azure CLI extension](#install-the-azure-cli-extension)
   * [Clone and build the repo](#clone-and-build-the-repo)
-  * [CREATE Azure Spring Cloud service instance using Azure CLI](#provision-azure-spring-cloud-service-instance-using-azure-cli)
+  * [CREATE Azure Spring Cloud Enterprise service instance](#provision-azure-spring-cloud-enterprise-service-instance)
   * [CREATE microservice applications](#create-microservice-applications)
   * [Create MySQL Database](#create-mysql-database)
   * [DEPLOY applications and set environment variables](#deploy-applications-and-set-environment-variables)
