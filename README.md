@@ -198,8 +198,7 @@ instance. It takes about 5 minutes to provision
 
 ### Load Tanzu Application Configuration Service
 
-Use the `application.yml` in the root of this project to load configuration into the 
-Tanzu Application Configuration Service in Azure Spring Cloud.
+Configure Application Configuration Service as below to pull configurations from Git backends for the apps.
 
 ```bash
     az spring-cloud application-configuration-service \
